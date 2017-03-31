@@ -1,0 +1,14 @@
+<ul id=”There are {{anzahl}} messages”>
+{% if data %}
+There are {{anzahl}} messages waiting
+	{% for message in data %}
+		<li>
+			<div class=”text”>
+				<a>Message: {{message}}</a>
+			</div>
+		</li>
+	{% endfor %}
+{% else %}
+There are no messages waiting
+{% endif %}
+</ul>
