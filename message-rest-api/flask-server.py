@@ -12,7 +12,7 @@ app = Flask(__name__, static_url_path='/home/markus/template/')
 @app.route("/")
 def hello():
         app.logger.warning('A warning occurred (%d apples)', 42)
-        app.logger.error('An error occurred')
+        app.logger.error('An error occurred again')
         app.logger.info('Info')
         return app.send_static_file('index.html')
 
