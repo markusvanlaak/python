@@ -3,19 +3,16 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask import request, render_template
 import redis
-import etcd
 
-client = etcd.Client(host='127.0.0.1', port=2793)
-redisconn = redis.StrictRedis(host='localhost', port=6000, db=0)
+r = redis.StrictRedis(host='localhost', port=6000, db=0)
 #r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-
-
-app = Flask(__name__, static_url_path='/home/markus/PycharmProjects/untitled/message-rest-api/template/')
+app = Flask(__name__, static_url_path='/home/markus/template/')
 
 @app.route("/")
-def hello():app.logger.warning('A warning occurred (%d apples)', 42)
-        app.logger.error('An error occurred again and again')
+def hello():
+        app.logger.warning('A warning occurred (%d apples)', 42)
+        app.logger.error('An error occurred')
         app.logger.info('Info')
         return app.send_static_file('index.html')
 
@@ -31,7 +28,7 @@ def post():
 	elif request.method == 'POST':
 		user = request.form['user']
 		message = request.form['message']
-		redisconn.lpush (user,message)
+		r.lpush (user,message)
 		return 'POST request %s' % message
 def rag():
         if request.method == 'GET':
@@ -41,11 +38,11 @@ def rag():
 def read():
 	if request.method == 'GET':
 		user = request.args.get('user')
-		n = redisconn.llen(user)
+		n = r.llen(user)
 		nu = n
 		messages=[]
 		while (n > 0):
-			messages.append(redisconn.lpop(user))
+			messages.append(r.lpop(user))
 			n = n - 1
 
 		return render_template('gam.html', data=messages, anzahl=nu)
