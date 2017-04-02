@@ -53,7 +53,7 @@ def read():
 
         return render_template('gam.html', data=messages, anzahl=nu)
     else:
-        logging.warning(' 415 not supported')
+        logging.warning(' 415 not supported STILL')
         return "415 not supported"
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s:%(levelname)s:%(message)s', filename='myapp.log', level=logging.INFO)
