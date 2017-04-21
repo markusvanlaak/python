@@ -9,8 +9,6 @@ headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/
 conn = http.client.HTTPConnection("localhost:5000")
 conn.request("POST", "/post", params, headers)
 
-
-
 res = conn.getresponse()
 
 assert isinstance(res.status, object)

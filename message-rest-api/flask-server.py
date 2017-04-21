@@ -1,24 +1,34 @@
 import logging
 from datetime import datetime
-from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask import request, render_template
 import redis
 import etcd
 
-etcdconn = etcd.Client(host='127.0.0.1', port=2379)
-r = redis.StrictRedis(host='localhost', port=6000, db=0)
-#r = redis.StrictRedis(host='localhost', port=6379, db=0)
-
-
 app = Flask(__name__, static_url_path='/home/markus/template/')
+
+try:
+    etcdconn = etcd.Client(host='127.0.0.1', port=2379)
+Exception e
+#r = redis.StrictRedis(host='localhost', port=6000, db=0)
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+def t1():
+    timestart = datetime.now()
+    return timestart
+
+def t2(tstart):
+    timedone = datetime.now()
+    timedelta = timedone - tstart
+    return timedelta
+
 
 @app.route("/")
 def hello():
-    timestart = datetime.now()
+    #timestart = datetime.now()
+    tstart = t1()
     etcdconn.write('/nodes/n1', 1)
-    timedone = datetime.now()
-    timedelta = timedone - timestart
+    timedelta = t2(tstart)
     logging.info(' writing to etcd took %s' % timedelta)
     return app.send_static_file('index.html')
 
